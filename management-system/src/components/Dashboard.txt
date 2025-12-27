@@ -1,0 +1,82 @@
+import React, { useState } from 'react';
+import Sidebar from './Sidebar';
+import Members from './Members';
+import Staff from './Staff';
+import Groups from './Groups';
+import Events from './Events';
+import Finance from './Finance';
+import Reports from './Reports';
+import Settings from './Settings';
+import '../styles/App.css';
+
+function Dashboard({ user, onLogout }) {
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+
+  const renderActiveTab = () => {
+    switch(activeTab) {
+      case 'dashboard': return <DashboardContent />;
+      case 'members': return <Members />;
+      case 'staff': return <Staff />;
+      case 'groups': return <Groups />;
+      case 'events': return <Events />;
+      case 'finance': return <Finance />;
+      case 'reports': return <Reports />;
+      case 'settings': return <Settings />;
+      default: return <DashboardContent />;
+    }
+  };
+
+  const getPageTitle = () => {
+    switch(activeTab) {
+      case 'dashboard': return 'Dashboard';
+      case 'members': return 'Members';
+      case 'staff': return 'Staff';
+      case 'groups': return 'Groups';
+      case 'events': return 'Events';
+      case 'finance': return 'Finance';
+      case 'reports': return 'Reports';
+      case 'settings': return 'Settings';
+      default: return 'Dashboard';
+    }
+  };
+
+  return (
+    <div className="container">
+      <Sidebar 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab} 
+        onLogout={onLogout}
+        isExpanded={isSidebarExpanded}
+      />
+      
+      <main className="main-content">
+        <header>
+          <div className="header-left">
+            <button className="mobile-menu-btn" onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}>
+              <i className="fas fa-bars"></i>
+            </button>
+            <h2>{getPageTitle()}</h2>
+          </div>
+          
+          <div className="header-right">
+            <div className="user-profile">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" />
+              <span>{user?.email || 'Admin User'}</span>
+            </div>
+          </div>
+        </header>
+        
+        {renderActiveTab()}
+      </main>
+    </div>
+  );
+}
+
+// Keep your existing DashboardContent component here or move it to separate file
+function DashboardContent() {
+  // Your existing dashboard content
+  return <div>Dashboard Content</div>;
+}
+
+export default Dashboard;
